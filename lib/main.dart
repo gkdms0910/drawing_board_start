@@ -135,7 +135,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Drawing Test',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(primarySwatch: Colors.purple),
       home: const MyHomePage(),
     );
   }
@@ -186,7 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.grey,
+      backgroundColor: const Color.fromARGB(90, 213, 108, 255),
       appBar: AppBar(
         title: const Text('Drawing Test'),
         systemOverlayStyle: SystemUiOverlayStyle.light,
