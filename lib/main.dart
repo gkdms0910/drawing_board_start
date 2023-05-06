@@ -166,6 +166,16 @@ class _MyHomePageState extends State<MyHomePage> {
       print('获取图片数据失败');
       return;
     }
+    /*final String dir = (await getApplicationDocumentsDirectory()).path;
+      final String fullPath = '$dir/${DateTime.now().millisecond}.png';
+      File capturedFile = File(fullPath);
+      await capturedFile.writeAsBytes(pngBytes);
+      print(capturedFile.path);
+    GallerySaver.saveImage(imagee)
+        .then((value) => print('>>>>save value = $value'))
+        .catchError((err) {
+      print('error:($err');
+    });*/
     showDialog<void>(
       context: context,
       builder: (BuildContext c) {
