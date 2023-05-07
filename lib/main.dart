@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
 import 'package:flutter_drawing_board/paint_contents.dart';
 import 'package:flutter_drawing_board/paint_extension.dart';
+import 'package:gallery_saver/gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
 
 const Map<String, dynamic> _testLine1 = <String, dynamic>{
   'type': 'StraightLine',
@@ -152,6 +154,8 @@ class _MyHomePageState extends State<MyHomePage> {
   /// 绘制控制器
   final DrawingController _drawingController = DrawingController();
 
+  String albumName = "TESTAPP";
+
   @override
   void dispose() {
     _drawingController.dispose();
@@ -166,16 +170,16 @@ class _MyHomePageState extends State<MyHomePage> {
       print('获取图片数据失败');
       return;
     }
-    /*final String dir = (await getApplicationDocumentsDirectory()).path;
-      final String fullPath = '$dir/${DateTime.now().millisecond}.png';
-      File capturedFile = File(fullPath);
-      await capturedFile.writeAsBytes(pngBytes);
-      print(capturedFile.path);
-    GallerySaver.saveImage(imagee)
+    final String dir = (await getApplicationDocumentsDirectory()).path;
+    final String fullPath = '$dir/${DateTime.now().millisecond}.png';
+    File capturedFile = File(fullPath);
+    await capturedFile.writeAsBytes(data);
+    print(capturedFile.path);
+    GallerySaver.saveImage(capturedFile.path, albumName: albumName)
         .then((value) => print('>>>>save value = $value'))
         .catchError((err) {
       print('error:($err');
-    });*/
+    });
     showDialog<void>(
       context: context,
       builder: (BuildContext c) {
@@ -198,7 +202,11 @@ class _MyHomePageState extends State<MyHomePage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(90, 213, 108, 255),
       appBar: AppBar(
-        title: const Text('Drawing Test'),
+        //title: const Text('Drawing Test'),
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () {},
+        ),
         systemOverlayStyle: SystemUiOverlayStyle.light,
         actions: <Widget>[
           IconButton(icon: const Icon(Icons.check), onPressed: _getImageData),

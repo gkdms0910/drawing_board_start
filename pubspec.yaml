@@ -35,7 +35,7 @@ dependencies:
     git:
       url: https://github.com/gkdms0910/flutter_drawing_board.git
       ref: master
-
+  path_provider: ^2.0.14
   gallery_saver: ^2.3.2
 
   # The following adds the Cupertino Icons font to your application.
