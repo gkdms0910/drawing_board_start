@@ -248,7 +248,7 @@ class _MyHomePageState extends State<MyHomePage> {
           const Padding(
             padding: EdgeInsets.all(8.0),
             child: SelectableText(
-              'https://github.com/xSILENCEx/flutter_drawing_board',
+              'Testing..',
               style: TextStyle(fontSize: 10, color: Colors.white),
             ),
           ),
