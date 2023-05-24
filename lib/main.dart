@@ -1,10 +1,11 @@
+import 'package:drawing_board_start/firebase_options.dart';
+import 'package:drawing_board_start/screens/log_in_screen.dart';
+import 'package:drawing_board_start/screens/main_paint_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_drawing_board/flutter_drawing_board.dart';
-import 'package:gallery_saver/gallery_saver.dart';
-import 'package:path_provider/path_provider.dart';
 
 const Map<String, dynamic> _testLine1 = <String, dynamic>{
   'type': 'StraightLine',
@@ -52,9 +53,11 @@ const Map<String, dynamic> _testLine2 = <String, dynamic>{
   }
 };
 
-/// 自定义绘制三角形
-
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.dumpErrorToConsole(details);
     if (kReleaseMode) {
@@ -65,6 +68,30 @@ void main() {
   runApp(const MyApp());
 }
 
+/*class MainPage extends StatelessWidget {
+  const MainPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: StreamBuilder<User?>(
+      //이건 스트림빌더임 ㅇㅇ
+      stream:
+          FirebaseAuth.instance.authStateChanges(), //스트림에 authStateChanges를 등록함
+      //auth 상태가 변경되면 -> user가 로그인을 하던지, 로그아웃을 하던지, 계정 삭제를 하던지
+      builder: (context, snapshot) {
+        //변경된 상태가 snapshot으로 빌드로 새로함.
+        if (snapshot.hasData) {
+          //snapshot이 데이터가 있으면
+          return const MyApp(); //기존의 MyApp() 위젯 빌드
+        } else {
+          return const LogInPage(); //아니면 로그인해라~
+        }
+      },
+    ));
+  }
+}*/
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -73,109 +100,22 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Drawing Test',
       theme: ThemeData(primarySwatch: Colors.purple),
-      home: const MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  /// 绘制控制器
-  final DrawingController _drawingController = DrawingController();
-
-  String albumName = "TESTAPP";
-
-  @override
-  void dispose() {
-    _drawingController.dispose();
-    super.dispose();
-  }
-
-  /// 获取画板数据 `getImageData()`
-  Future<void> _getImageData() async {
-    final Uint8List? data =
-        (await _drawingController.getImageData())?.buffer.asUint8List();
-    if (data == null) {
-      print('获取图片数据失败');
-      return;
-    }
-    final String dir = (await getApplicationDocumentsDirectory()).path;
-    final String fullPath = '$dir/${DateTime.now().millisecond}.png';
-    File capturedFile = File(fullPath);
-    await capturedFile.writeAsBytes(data);
-    print(capturedFile.path);
-    GallerySaver.saveImage(capturedFile.path, albumName: albumName)
-        .then((value) => print('>>>>save value = $value'))
-        .catchError((err) {
-      print('error:($err');
-    });
-    showDialog<void>(
-      context: context,
-      builder: (BuildContext c) {
-        return Material(
-          color: Colors.transparent,
-          child:
-              InkWell(onTap: () => Navigator.pop(c), child: Image.memory(data)),
-        );
-      },
-    );
-  }
-
-  /// 获取画板内容 Json `getJsonList()`
-
-  /// 添加Json测试内容
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromARGB(90, 213, 108, 255),
-      appBar: AppBar(
-        //title: const Text('Drawing Test'),
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {},
+      home: Scaffold(
+        body: StreamBuilder<User?>(
+          //이건 스트림빌더임 ㅇㅇ
+          stream: FirebaseAuth.instance
+              .authStateChanges(), //스트림에 authStateChanges를 등록함
+          //auth 상태가 변경되면 -> user가 로그인을 하던지, 로그아웃을 하던지, 계정 삭제를 하던지
+          builder: (context, snapshot) {
+            //변경된 상태가 snapshot으로 빌드로 새로함.
+            if (snapshot.hasData) {
+              //snapshot이 데이터가 있으면
+              return const MyHomePage(); //기존의 MyApp() 위젯 빌드
+            } else {
+              return const LogInPage(); //아니면 로그인해라~
+            }
+          },
         ),
-        systemOverlayStyle: SystemUiOverlayStyle.light,
-        actions: <Widget>[
-          IconButton(icon: const Icon(Icons.check), onPressed: _getImageData),
-          const SizedBox(width: 40),
-        ],
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                return DrawingBoard(
-                  // boardPanEnabled: false,
-                  // boardScaleEnabled: false,
-                  controller: _drawingController,
-                  background: Container(
-                    width: constraints.maxWidth,
-                    height: constraints.maxHeight,
-                    color: Colors.white,
-                  ),
-                  showDefaultActions: true,
-                  showDefaultTools: true,
-                );
-              },
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: SelectableText(
-              'Testing..',
-              style: TextStyle(fontSize: 10, color: Colors.white),
-            ),
-          ),
-        ],
       ),
     );
   }
