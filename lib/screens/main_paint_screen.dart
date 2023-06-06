@@ -104,8 +104,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   // boardScaleEnabled: false,
                   controller: _drawingController,
                   background: Container(
-                    width: constraints.maxWidth,
-                    height: constraints.maxHeight,
+                    width: 500,
+                    height: 500,
                     color: Colors.white,
                   ),
                   showDefaultActions: true,
