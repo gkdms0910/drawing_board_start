@@ -94,33 +94,49 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                return DrawingBoard(
-                  // boardPanEnabled: false,
-                  // boardScaleEnabled: false,
-                  controller: _drawingController,
-                  background: Container(
-                    width: 500,
-                    height: 500,
-                    color: Colors.white,
-                  ),
-                  showDefaultActions: true,
-                  showDefaultTools: true,
-                );
-              },
-            ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Column(
+            children: <Widget>[
+              Expanded(
+                child: LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    return DrawingBoard(
+                      // boardPanEnabled: false,
+                      // boardScaleEnabled: false,
+                      controller: _drawingController,
+                      background: Container(
+                        width: 500,
+                        height: 500,
+                        color: Colors.white,
+                      ),
+                      showDefaultActions: true,
+                      showDefaultTools: true,
+                    );
+                  },
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: SelectableText(
+                  'Testing..',
+                  style: TextStyle(fontSize: 10, color: Colors.white),
+                ),
+              ),
+            ],
           ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: SelectableText(
-              'Testing..',
-              style: TextStyle(fontSize: 10, color: Colors.white),
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: const Padding(
+              padding: EdgeInsets.fromLTRB(0, 100, 0, 0),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Text('testing'),
+              ),
             ),
-          ),
+          )
         ],
       ),
       drawer: Drawer(
