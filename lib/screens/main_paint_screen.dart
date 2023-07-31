@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:drawing_board_start/models/text_highlight.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,6 +31,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   /// paint controller
   final DrawingController _drawingController = DrawingController();
+  int value = 0;
+  bool positive = false;
+  bool loading = false;
 
   String albumName = "TESTAPP";
 
@@ -107,10 +111,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       // boardScaleEnabled: false,
                       controller: _drawingController,
                       background: Container(
-                        width: 500,
-                        height: 500,
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: MediaQuery.of(context).size.width * 0.9,
                         color: Colors.white,
                       ),
+                      showDefaultActions1: true,
                       showDefaultActions: true,
                       showDefaultTools: true,
                     );
@@ -118,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               const Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(120),
                 child: SelectableText(
                   'Testing..',
                   style: TextStyle(fontSize: 10, color: Colors.white),
@@ -133,10 +138,51 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: EdgeInsets.fromLTRB(0, 100, 0, 0),
               child: Align(
                 alignment: Alignment.topCenter,
-                child: Text('testing'),
+                child: HighLightedText(
+                  color: Colors.black,
+                  'TEST KEYWORD',
+                  fontSize: 20,
+                ),
               ),
             ),
-          )
+          ),
+          /*SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: AnimatedToggleSwitch<bool>.dual(
+                  current: positive,
+                  first: false,
+                  second: true,
+                  dif: 50.0,
+                  borderColor: Colors.transparent,
+                  borderWidth: 5.0,
+                  height: 55,
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black26,
+                      spreadRadius: 1,
+                      blurRadius: 2,
+                      offset: Offset(0, 1.5),
+                    ),
+                  ],
+                  onChanged: (b) {
+                    setState(() => positive = b);
+                  },
+                  colorBuilder: (b) => b ? Colors.red : Colors.green,
+                  iconBuilder: (value) => value
+                      ? const Icon(Icons.coronavirus_rounded)
+                      : const Icon(Icons.tag_faces_rounded),
+                  textBuilder: (value) => value
+                      ? const Center(child: Text('TEST2'))
+                      : const Center(child: Text('TEST1')),
+                ),
+              ),
+            ),
+          ),*/
         ],
       ),
       drawer: Drawer(
