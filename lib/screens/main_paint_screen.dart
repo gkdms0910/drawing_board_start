@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:drawing_board_start/models/keywords.dart';
 import 'package:drawing_board_start/models/text_highlight.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -131,7 +132,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ],
           ),
-          SizedBox(
+          const KeyWords()
+          /*SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             child: const Padding(
@@ -145,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-          ),
+          ),*/
           /*SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
