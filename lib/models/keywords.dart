@@ -12,7 +12,7 @@ class KeyWords extends StatefulWidget {
 }
 
 class _KeyWordsState extends State<KeyWords> {
-  List<String> text = [];
+  var text = [];
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +21,7 @@ class _KeyWordsState extends State<KeyWords> {
       builder: (context, snapshot) {
         Future<DateTime> date = serverDate();
         var contents = snapshot.data.toString();
+
         var text = contents.split('\n');
 
         // serverTime();
@@ -30,7 +31,9 @@ class _KeyWordsState extends State<KeyWords> {
           },
         );
 
-        //print(text[1]);
+        print(text.length);
+
+        // print(text[1]);
         String todayWord = text[0];
         return SizedBox(
           width: MediaQuery.of(context).size.width,
@@ -40,10 +43,10 @@ class _KeyWordsState extends State<KeyWords> {
             child: Align(
               alignment: Alignment.topCenter,
               child: HighLightedText(
-                color: const Color.fromARGB(255, 197, 154, 154),
-                //todayWord,
-
+                color: const Color.fromARGB(255, 0, 0, 0),
                 todayWord,
+
+                //todayWord,
                 fontSize: 20,
               ),
             ),
