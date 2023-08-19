@@ -12,8 +12,6 @@ class KeyWords extends StatefulWidget {
 }
 
 class _KeyWordsState extends State<KeyWords> {
-  var text = [];
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -22,19 +20,22 @@ class _KeyWordsState extends State<KeyWords> {
         Future<DateTime> date = serverDate();
         var contents = snapshot.data.toString();
 
-        var text = contents.split('\n');
-
+        List<String> text = contents.split('\n');
+        int counter = 0;
         // serverTime();
         date.then(
           (value) {
             print('$value');
           },
         );
+        if (text.length > 1) {
+          print(text[1]);
 
-        print(text.length);
+          counter = 1;
+        }
 
         // print(text[1]);
-        String todayWord = text[0];
+        String todayWord = text[counter];
         return SizedBox(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
